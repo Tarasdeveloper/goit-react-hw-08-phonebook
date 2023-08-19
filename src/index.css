@@ -7,6 +7,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(https://www.dribin.by/wp-content/uploads/2020/02/%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  background-position: center center;
 }
 
 code {

@@ -1,25 +1,16 @@
 import React from 'react';
 import { FilterInput, FilterLabel } from './Filter.styled';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFilterText } from 'redux/contactsReducer';
 
-const Filter = () => {
-  const dispatch = useDispatch();
-  const filterValue = useSelector(state => state.contacts.filterValue);
-
+const Filter = ({ setFilterText }) => {
   const handleFilterChange = event => {
     const newText = event.target.value;
-    dispatch(setFilterText(newText)); // Диспатчите действие для обновления текста фильтра в состоянии
+    setFilterText(newText);
   };
 
   return (
     <FilterLabel>
       Find contacts by name
-      <FilterInput
-        type="text"
-        value={filterValue}
-        onChange={handleFilterChange}
-      />
+      <FilterInput type="text" onChange={handleFilterChange} />
     </FilterLabel>
   );
 };

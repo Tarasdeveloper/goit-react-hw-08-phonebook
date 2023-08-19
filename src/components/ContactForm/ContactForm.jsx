@@ -1,76 +1,56 @@
-// import React, { useState } from 'react';
-// import { AddButton, Form, FormInput, FormLabel } from './ContactForm.styled';
-// import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { AddButton, Form, FormInput, FormLabel } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addContactThunk,
+  requestContactsThunk,
+  selectUserContacts,
+} from 'redux/contactsReducer';
 
-// const INITIAL_FORM_STATE = {
-//   name: '',
-//   number: '',
-// };
+export default function ContactForm() {
+  const contacts = useSelector(selectUserContacts);
+  const dispatch = useDispatch();
 
-// export default function ContactForm() {
-//   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
-//   const contacts = useSelector(state => state.phonebook.contacts);
-//   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(requestContactsThunk());
+  }, [dispatch]);
 
-//   const handleInputsChange = ({ target: { name, value } }) => {
-//     setFormData(prevState => ({ ...prevState, [name]: value }));
-//   };
+  const handleSubmit = event => {
+    event.preventDefault();
 
-//   const checkNewContactPresence = contactName => {
-//     return contacts.some(contact => contact.name === contactName);
-//   };
+    const form = event.currentTarget;
 
-//   const handleAddContact = newContactData => {
-//     const newContactEntity = {
-//       ...newContactData,
-//     };
+    const name = form.elements.contactName.value;
+    const number = form.elements.contactNumber.value;
 
-//     if (!checkNewContactPresence(newContactEntity.name)) {
-//       dispatch(addContact(newContactEntity));
-//     } else {
-//       alert(`${newContactEntity.name} is already in contacts!`);
-//     }
-//   };
+    if (contacts.some(contact => contact.name === name))
+      return alert(`Contact with name ${name} already exists!`);
+    dispatch(addContactThunk({ name, number }));
+  };
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-
-//     const newContact = {
-//       name: formData.name,
-//       number: formData.number,
-//     };
-
-//     handleAddContact(newContact);
-//     setFormData({ number: '', name: '' });
-//   };
-
-//   return (
-//     <Form onSubmit={handleSubmit}>
-//       <FormLabel>
-//         Name
-//         <FormInput
-//           type="text"
-//           name="name"
-//           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//           required
-//           value={formData.name}
-//           onChange={handleInputsChange}
-//         />
-//       </FormLabel>
-//       <FormLabel>
-//         Number
-//         <FormInput
-//           type="tel"
-//           name="number"
-//           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-//           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-//           required
-//           value={formData.number}
-//           onChange={handleInputsChange}
-//         />
-//       </FormLabel>
-//       <AddButton type="submit">Add contact</AddButton>
-//     </Form>
-//   );
-// }
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FormLabel>
+        <p>Name: </p>
+        <FormInput
+          type="text"
+          name="contactName"
+          // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+        />
+      </FormLabel>
+      <FormLabel>
+        <p>Number: </p>
+        <FormInput
+          type="tel"
+          name="contactNumber"
+          // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        />
+      </FormLabel>
+      <AddButton type="submit">Add contact</AddButton>
+    </Form>
+  );
+}

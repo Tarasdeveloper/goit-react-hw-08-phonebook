@@ -1,63 +1,60 @@
-// import { useEffect } from 'react';
-// import { ContactsItem, DeleteBtn, ListContacts } from './ContactList.styled';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { deleteContact, getContacts } from 'redux/operations';
+import { useEffect, useState } from 'react';
+import { ContactsItem, DeleteBtn, ListContacts } from './ContactList.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from 'components/Loader/Loader';
+import {
+  deleteContactThunk,
+  requestContactsThunk,
+  selectContactsError,
+  selectContactsLoading,
+  selectUserContacts,
+} from 'redux/contactsReducer';
+import Filter from 'components/Filter/Filter';
 
-// const ContactList = () => {
-//   const { contacts, filterTerm, isFetching, error } = useSelector(
-//     state => state.phonebook
-//   );
-//   const dispatch = useDispatch();
+const ContactList = () => {
+  const contacts = useSelector(selectUserContacts);
+  const isLoading = useSelector(selectContactsLoading);
+  const error = useSelector(selectContactsError);
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     dispatch(getContacts());
-//   }, [dispatch]);
+  const [filterText, setFilterText] = useState('');
 
-//   const contactsFilteredByName = contacts?.filter(contact =>
-//     contact.name.toLowerCase().includes((filterTerm || '').toLowerCase())
-//   );
-//   const handleDeleteContact = contactId => {
-//     dispatch(deleteContact(contactId));
-//   };
+  useEffect(() => {
+    dispatch(requestContactsThunk());
+  }, [dispatch]);
 
-//   return (
-//     <ListContacts>
-//       {isFetching && <p>Loading data...</p>}
-//       {contacts.length === 0 && !isFetching && (
-//         <p>There are no contacts found!</p>
-//       )}
-//       {contacts.length > 0 &&
-//         !isFetching &&
-//         contactsFilteredByName.map(({ id, name, number }) => {
-//           return (
-//             <ContactsItem key={id}>
-//               <span>{name}</span>:&nbsp;{number}
-//               <DeleteBtn type="button" onClick={() => handleDeleteContact(id)}>
-//                 Delete
-//               </DeleteBtn>
-//               {!!error && <div className="error">{error.message}</div>}
-//             </ContactsItem>
-//           );
-//         })}
-//     </ListContacts>
-//   );
-// };
+  const handleDeleteContact = contactId => {
+    dispatch(deleteContactThunk(contactId));
+  };
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterText.toLowerCase())
+  );
 
-// export default ContactList;
+  return (
+    <>
+      <Filter setFilterText={setFilterText} />
+      <ListContacts>
+        {isLoading && <Loader />}
+        {error && <p>Oops, some error occured...{error}</p>}
+        {contacts.length > 0 &&
+          filteredContacts.map(({ id, name, number }) => {
+            return (
+              <ContactsItem key={id}>
+                <span>{name}</span>:&nbsp;{number}
+                <DeleteBtn
+                  onClick={() => handleDeleteContact(id)}
+                  type="button"
+                  aria-label="Delete contact"
+                >
+                  delete &times;
+                </DeleteBtn>
+                {!!error && <div>{error.message}</div>}
+              </ContactsItem>
+            );
+          })}
+      </ListContacts>
+    </>
+  );
+};
 
-// import ContactForm from 'components/ContactForm/ContactForm';
-// import ContactList from 'components/ContactList/ContactList';
-// import Filter from 'components/Filter/Filter';
-// import Wrapper from 'components/Wrapper/Wrapper';
-
-// const ContactsPage = () => {
-//   return (
-//     <Wrapper>
-//       <h1>Phonebook</h1>
-//       <ContactForm />
-//       <h2>Contacts</h2>
-//       <Filter />
-//       <ContactList />
-//     </Wrapper>
-//   );
-// };
+export default ContactList;
