@@ -1,5 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { $instance } from './operations';
+
+export const setFilterText = createAction('contacts/setFilterText');
 
 export const requestContactsThunk = createAsyncThunk(
   'contacts/getAll',
@@ -38,7 +40,7 @@ export const deleteContactThunk = createAsyncThunk(
 );
 
 const initialState = {
-  contacts: null,
+  contacts: [],
   isLoading: false,
   error: null,
 };
@@ -46,6 +48,11 @@ const initialState = {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
+  reducers: {
+    [setFilterText]: (state, action) => {
+      state.filterText = action.payload;
+    },
+  },
   extraReducers: builder =>
     builder
       .addCase(requestContactsThunk.pending, state => {

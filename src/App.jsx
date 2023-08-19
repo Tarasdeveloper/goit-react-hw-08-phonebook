@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { logoutUserThunk, refreshUserThunk } from 'redux/operations';
 import { selectAuthentificated, selectToken } from 'redux/authReducer';
-import { Loader } from 'components/Loader/Loader';
+import Loader from 'components/Loader/Loader';
 
 const HomePage = lazy(() => import('pages/HomePage'));
 const ContactsPage = lazy(() => import('pages/ContactsPage'));

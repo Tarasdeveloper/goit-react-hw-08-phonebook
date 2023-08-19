@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAuthentificated } from '../redux/authReducer';
 import {
   addContactThunk,
   deleteContactThunk,
@@ -9,22 +8,21 @@ import {
   selectContactsLoading,
   selectUserContacts,
 } from '../redux/contactsReducer';
-import { Loader } from '../components/Loader/Loader';
+import Loader from 'components/Loader/Loader';
 import Wrapper from 'components/Wrapper/Wrapper';
 import Filter from 'components/Filter/Filter';
 
 const ContactsPage = () => {
-  const authentificated = useSelector(selectAuthentificated);
   const contacts = useSelector(selectUserContacts);
   const isLoading = useSelector(selectContactsLoading);
   const error = useSelector(selectContactsError);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!authentificated) return;
+  const [filterText, setFilterText] = useState('');
 
+  useEffect(() => {
     dispatch(requestContactsThunk());
-  }, [authentificated, dispatch]);
+  }, [dispatch]);
 
   const handleDeleteContact = contactId => {
     dispatch(deleteContactThunk(contactId));
@@ -43,8 +41,9 @@ const ContactsPage = () => {
     dispatch(addContactThunk({ name, number }));
   };
 
-  const showContacts = Array.isArray(contacts) && contacts.length > 0;
-
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterText.toLowerCase())
+  );
   return (
     <Wrapper>
       <form onSubmit={handleSubmit}>
@@ -63,46 +62,29 @@ const ContactsPage = () => {
         <button type="submit">Add contact</button>
       </form>
 
+      <Filter setFilterText={setFilterText} />
+
       {isLoading && <Loader />}
       {error && <p>Oops, some error occured...{error}</p>}
-      <Filter />
       <ul>
-        {showContacts &&
-          contacts.map(contact => {
-            return (
-              <li key={contact.id}>
-                <h3>Name: {contact.name}</h3>
-                <p>Number: {contact.number}</p>
-                <button
-                  onClick={() => handleDeleteContact(contact.id)}
-                  type="button"
-                  aria-label="Delete contact"
-                >
-                  delete &times;
-                </button>
-              </li>
-            );
-          })}
+        {filteredContacts.map(contact => {
+          return (
+            <li key={contact.id}>
+              <h3>Name: {contact.name}</h3>
+              <p>Number: {contact.number}</p>
+              <button
+                onClick={() => handleDeleteContact(contact.id)}
+                type="button"
+                aria-label="Delete contact"
+              >
+                delete &times;
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </Wrapper>
   );
 };
 
 export default ContactsPage;
-
-// import ContactForm from 'components/ContactForm/ContactForm';
-// import ContactList from 'components/ContactList/ContactList';
-// import Filter from 'components/Filter/Filter';
-// import Wrapper from 'components/Wrapper/Wrapper';
-
-// const ContactsPage = () => {
-//   return (
-//     <Wrapper>
-//       <h1>Phonebook</h1>
-//       <ContactForm />
-//       <h2>Contacts</h2>
-//       <Filter />
-//       <ContactList />
-//     </Wrapper>
-//   );
-// };
