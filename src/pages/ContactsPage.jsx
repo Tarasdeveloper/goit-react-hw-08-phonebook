@@ -5,6 +5,7 @@ import ContactList from 'components/ContactList/ContactList';
 const ContactsPage = () => {
   return (
     <Wrapper>
+      <h1>My contacts</h1>
       <ContactForm />
       <ContactList />
     </Wrapper>

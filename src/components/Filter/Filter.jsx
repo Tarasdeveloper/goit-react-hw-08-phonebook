@@ -1,5 +1,9 @@
 import React from 'react';
-import { FilterInput, FilterLabel } from './Filter.styled';
+import {
+  FormInput,
+  FormLabel,
+  FormNames,
+} from 'components/ContactForm/ContactForm.styled';
 
 const Filter = ({ setFilterText }) => {
   const handleFilterChange = event => {
@@ -8,10 +12,10 @@ const Filter = ({ setFilterText }) => {
   };
 
   return (
-    <FilterLabel>
-      Find contacts by name
-      <FilterInput type="text" onChange={handleFilterChange} />
-    </FilterLabel>
+    <FormLabel>
+      <FormNames>Find contacts by name</FormNames>
+      <FormInput type="text" onChange={handleFilterChange} />
+    </FormLabel>
   );
 };
 

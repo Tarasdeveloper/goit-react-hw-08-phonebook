@@ -1,4 +1,4 @@
-import { StyledNavLink } from 'App.styled';
+// import { StyledNavLink } from 'App.styled';
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
 import { Suspense, lazy, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { logoutUserThunk, refreshUserThunk } from 'redux/operations';
 import { selectAuthentificated, selectToken } from 'redux/authReducer';
 import Loader from 'components/Loader/Loader';
+import { NavButton, Navigation, StyledNavLink } from 'components/Links.styled';
 
 const HomePage = lazy(() => import('pages/HomePage'));
 const ContactsPage = lazy(() => import('pages/ContactsPage'));
@@ -29,12 +30,12 @@ const App = () => {
   return (
     <div>
       <header>
-        <nav>
+        <Navigation>
           <StyledNavLink to="/">Home</StyledNavLink>
           {authentificated ? (
             <>
               <StyledNavLink to="/contacts">Contacts</StyledNavLink>
-              <button onClick={handleLogout}>Log Out</button>
+              <NavButton onClick={handleLogout}>Log Out</NavButton>
             </>
           ) : (
             <>
@@ -42,7 +43,7 @@ const App = () => {
               <StyledNavLink to="/register">Register</StyledNavLink>
             </>
           )}
-        </nav>
+        </Navigation>
       </header>
       <main>
         <Suspense fallback={<Loader />}>

@@ -14,6 +14,7 @@ export const FormLabel = styled.label`
   margin-bottom: 20px;
   font-size: 20px;
   text-align: left;
+  align-items: center;
 `;
 
 export const FormInput = styled.input`
@@ -21,14 +22,24 @@ export const FormInput = styled.input`
   font-size: 15px;
   width: 300px;
   margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
 `;
 
-export const AddButton = styled.button`
+export const FormNames = styled.p`
+  margin: 0;
+  text-shadow: rgb(67, 60, 60) 2px 2px 20px, rgba(30, 30, 30, 0.8) 2px 2px 2px;
+`;
+
+export const FormButton = styled.button`
   margin-bottom: 20px;
-  font-size: 14px;
-  padding: 5px 10px;
+  font-size: 16px;
+  padding: 10px;
   cursor: pointer;
-  background-color: skyblue;
+  background-color: rgb(137, 126, 133);
   border-radius: 5px;
-  border: none;
+  padding: 10px;
+  width: 250px;
+  color: #fff;
 `;

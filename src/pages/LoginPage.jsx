@@ -3,6 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUserThunk } from '../redux/operations';
 import { selectAuthentificated } from '../redux/authReducer';
 import { Navigate } from 'react-router-dom';
+import {
+  Form,
+  FormButton,
+  FormInput,
+  FormLabel,
+  FormNames,
+} from 'components/ContactForm/ContactForm.styled';
+import Wrapper from 'components/Wrapper/Wrapper';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -27,23 +35,27 @@ const LoginPage = () => {
   if (authentificated) return <Navigate to="/contacts" />;
 
   return (
-    <div>
+    <Wrapper>
       <h1>Login Into Your Account</h1>
-      <form onSubmit={handleSubmit}>
-        <br />
-        <label>
-          <p>Email:</p>
-          <input name="userEmail" type="email" required />
-        </label>
-        <br />
-        <label>
-          <p>Password:</p>
-          <input name="userPassword" type="password" required minLength={7} />
-        </label>
-        <br />
-        <button type="submit">Sign In</button>
-      </form>
-    </div>
+      <Form onSubmit={handleSubmit}>
+        <FormLabel>
+          <FormNames>Email:</FormNames>
+          <FormInput name="userEmail" type="email" required />
+        </FormLabel>
+
+        <FormLabel>
+          <FormNames>Password:</FormNames>
+          <FormInput
+            name="userPassword"
+            type="password"
+            required
+            minLength={7}
+          />
+        </FormLabel>
+
+        <FormButton type="submit">Sign In</FormButton>
+      </Form>
+    </Wrapper>
   );
 };
 

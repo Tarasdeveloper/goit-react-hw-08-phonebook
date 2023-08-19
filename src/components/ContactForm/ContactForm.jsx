@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { AddButton, Form, FormInput, FormLabel } from './ContactForm.styled';
+import {
+  Form,
+  FormButton,
+  FormInput,
+  FormLabel,
+  FormNames,
+} from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addContactThunk,
@@ -19,7 +25,6 @@ export default function ContactForm() {
     event.preventDefault();
 
     const form = event.currentTarget;
-
     const name = form.elements.contactName.value;
     const number = form.elements.contactNumber.value;
 
@@ -31,7 +36,7 @@ export default function ContactForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <FormLabel>
-        <p>Name: </p>
+        <FormNames>Name: </FormNames>
         <FormInput
           type="text"
           name="contactName"
@@ -41,7 +46,7 @@ export default function ContactForm() {
         />
       </FormLabel>
       <FormLabel>
-        <p>Number: </p>
+        <FormNames>Number: </FormNames>
         <FormInput
           type="tel"
           name="contactNumber"
@@ -50,7 +55,7 @@ export default function ContactForm() {
           required
         />
       </FormLabel>
-      <AddButton type="submit">Add contact</AddButton>
+      <FormButton type="submit">Add contact</FormButton>
     </Form>
   );
 }

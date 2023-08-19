@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ContactsItem, DeleteBtn, ListContacts } from './ContactList.styled';
+import {
+  ContactsItem,
+  ContactsName,
+  ContactsNumber,
+  DeleteBtn,
+  ListContacts,
+} from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from 'components/Loader/Loader';
 import {
@@ -32,15 +38,16 @@ const ContactList = () => {
 
   return (
     <>
-      <Filter setFilterText={setFilterText} />
       <ListContacts>
+        <Filter setFilterText={setFilterText} />
         {isLoading && <Loader />}
         {error && <p>Oops, some error occured...{error}</p>}
         {contacts.length > 0 &&
           filteredContacts.map(({ id, name, number }) => {
             return (
               <ContactsItem key={id}>
-                <span>{name}</span>:&nbsp;{number}
+                <ContactsName>{name}: </ContactsName>
+                <ContactsNumber>{number}</ContactsNumber>
                 <DeleteBtn
                   onClick={() => handleDeleteContact(id)}
                   type="button"
