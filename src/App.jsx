@@ -6,7 +6,12 @@ import { Route, Routes } from 'react-router-dom';
 import { logoutUserThunk, refreshUserThunk } from 'redux/operations';
 import { selectAuthentificated, selectToken } from 'redux/authReducer';
 import Loader from 'components/Loader/Loader';
-import { NavButton, Navigation, StyledNavLink } from 'components/Links.styled';
+import {
+  Header,
+  NavButton,
+  Navigation,
+  StyledNavLink,
+} from 'components/Links.styled';
 
 const HomePage = lazy(() => import('pages/HomePage'));
 const ContactsPage = lazy(() => import('pages/ContactsPage'));
@@ -28,8 +33,8 @@ const App = () => {
     dispatch(logoutUserThunk());
   };
   return (
-    <div>
-      <header>
+    <>
+      <Header>
         <Navigation>
           <StyledNavLink to="/">Home</StyledNavLink>
           {authentificated ? (
@@ -44,7 +49,7 @@ const App = () => {
             </>
           )}
         </Navigation>
-      </header>
+      </Header>
       <main>
         <Suspense fallback={<Loader />}>
           <Routes>
@@ -62,7 +67,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </main>
-    </div>
+    </>
   );
 };
 

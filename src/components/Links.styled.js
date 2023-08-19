@@ -35,3 +35,8 @@ export const NavButton = styled.button`
 export const Navigation = styled.nav`
   padding: 20px 20px 50px;
 `;
+
+export const Header = styled.header`
+  max-width: 760px;
+  margin: 0 auto;
+`;
